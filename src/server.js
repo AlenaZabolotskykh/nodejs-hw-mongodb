@@ -3,11 +3,31 @@ import cors from 'cors';
 import pino from 'pino-http';
 
 export const setupServer = () => {
-  express().use(cors());
+  const app = express();
+
+  app.use(cors());
 
   const logger = pino({
     transport: {
       target: 'pino-pretty',
     },
   });
+
+  app.get('/', (req, res) => {
+    res.json({ message: 'start project' });
+  });
+
+  app.use((req, res) => {
+    res.status(404).json({
+      message: 'Not found',
+    });
+  });
+
+  app.use((error, req, res, next) => {
+    res.status(500).json({
+      message: error.message,
+    });
+  });
+
+  app.listen(3000, () => console.log(`Server is running on port 3000`));
 };
