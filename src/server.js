@@ -4,6 +4,8 @@ import pino from 'pino-http';
 // import dotenv from 'dotenv';
 import { env } from './utils/env.js';
 
+import ContactCollection from './db/models/contact.js';
+
 // dotenv.config();
 const port = Number(env('PORT', 3000));
 
@@ -18,8 +20,15 @@ export const setupServer = () => {
     },
   });
 
-  app.get('/', (req, res) => {
-    res.json({ message: 'start project' });
+  app.get('/contacts', async (req, res) => {
+    // res.json({ message: 'start project' });
+    const data = await ContactCollection.find();
+
+    res.json({
+      status: 200,
+      message: 'Successfully found contacts!',
+      data,
+    });
   });
 
   app.use((req, res) => {
