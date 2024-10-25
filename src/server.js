@@ -4,6 +4,8 @@ import pino from 'pino-http';
 // import dotenv from 'dotenv';
 import { env } from './utils/env.js';
 
+import * as contactServices from './services/contacts.js';
+
 // dotenv.config();
 const port = Number(env('PORT', 3000));
 
@@ -18,8 +20,33 @@ export const setupServer = () => {
     },
   });
 
-  app.get('/', (req, res) => {
-    res.json({ message: 'start project' });
+  //   app.use(logger)
+
+  app.get('/contacts', async (req, res) => {
+    // res.json({ message: 'start project' });
+    const data = await contactServices.getContacts();
+
+    res.json({
+      status: 200,
+      message: 'Successfully found contacts!',
+      data,
+    });
+  });
+
+  app.get('/contacts/:contactId', async (req, res) => {
+    const { contactId } = req.params;
+    const data = await contactServices.getContactById(contactId);
+
+    if (!data) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Contact not found',
+      });
+    }
+    res.status(200).json({
+      message: `Successfully found contact with id ${contactId}!`,
+      data,
+    });
   });
 
   app.use((req, res) => {
