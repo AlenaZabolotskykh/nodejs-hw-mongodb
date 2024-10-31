@@ -34,8 +34,8 @@ export const addContactController = async (req, res) => {
 };
 
 export const upsertContactController = async (req, res) => {
-  const { id: _id } = req.params;
-  const result = await contactServices.updateMovie({
+  const { contactId: _id } = req.params;
+  const result = await contactServices.updateContact({
     _id,
     payload: req.body,
     options: {
@@ -53,7 +53,7 @@ export const upsertContactController = async (req, res) => {
 };
 
 export const patchContactController = async (req, res) => {
-  const { id: _id } = req.params;
+  const { contactId: _id } = req.params;
 
   const result = await contactServices.updateContact({
     _id,
@@ -67,5 +67,19 @@ export const patchContactController = async (req, res) => {
     status: 200,
     message: 'Contact patched successfully',
     data: result.data,
+  });
+};
+
+export const deleteContactController = async (req, res) => {
+  const { contactId: _id } = req.params;
+  const data = await contactServices.deleteContact({ _id });
+  if (!data) {
+    throw createHttpError(404, 'Contact not found');
+  }
+
+  res.json({
+    status: 204,
+    message: 'Contact deleted successfully',
+    data,
   });
 };

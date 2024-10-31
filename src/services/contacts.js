@@ -19,3 +19,6 @@ export const updateContact = async ({ _id, payload, options = {} }) => {
     isNew: Boolean(rawResult.lastErrorObject.upserted),
   };
 };
+
+export const deleteContact = async (filter) =>
+  ContactCollection.findOneAndDelete(filter);
