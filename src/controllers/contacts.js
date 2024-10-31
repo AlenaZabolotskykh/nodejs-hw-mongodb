@@ -24,12 +24,48 @@ export const getContactController = async (req, res, next) => {
   });
 };
 
-export const addCpntactController = async (req, res) => {
+export const addContactController = async (req, res) => {
   const data = await contactServices.addContact(req.body);
-
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
     data,
+  });
+};
+
+export const upsertContactController = async (req, res) => {
+  const { id: _id } = req.params;
+  const result = await contactServices.updateMovie({
+    _id,
+    payload: req.body,
+    options: {
+      upsert: true,
+    },
+  });
+
+  const status = result.isNew ? 201 : 200;
+
+  res.status(status).json({
+    status,
+    message: 'Contact upserted successfully',
+    data: result.data,
+  });
+};
+
+export const patchContactController = async (req, res) => {
+  const { id: _id } = req.params;
+
+  const result = await contactServices.updateContact({
+    _id,
+    payload: req.body,
+  });
+
+  if (!result) {
+    throw createHttpError(404, 'Contact not found');
+  }
+  res.json({
+    status: 200,
+    message: 'Contact patched successfully',
+    data: result.data,
   });
 };
