@@ -11,7 +11,7 @@ export const getContacts = async ({
   const limit = perPage;
 
   const contactQuery = ContactCollection.find();
-  const contactCount = await ContactCollection.find()
+  const totalItems = await ContactCollection.find()
     .merge(contactQuery)
     .countDocuments();
 
@@ -22,7 +22,7 @@ export const getContacts = async ({
     .exec();
 
   const paginationData = calculatePaginationData({
-    contactCount,
+    totalItems,
     page,
     perPage,
   });
