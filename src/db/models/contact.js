@@ -28,7 +28,7 @@ const contactSchema = new Schema(
       default: 'personal',
     },
   },
-  { versionKey: false },
+  { versionKey: false, timestamps: true },
 );
 
 export const sortByList = [
