@@ -1,6 +1,9 @@
 import { Schema, model } from 'mongoose';
+import { handleSaveError } from './hooks.js';
+import { setUpdateSettings } from './hooks.js';
 
 import { typeList } from '../../constants/contacts.js';
+
 const contactSchema = new Schema(
   {
     name: {
@@ -35,6 +38,12 @@ export const sortByList = [
   'isFavourite',
   'contactType',
 ];
+
+contactSchema.post('save', handleSaveError);
+
+contactSchema.pre('findOneAndUpdate', setUpdateSettings);
+
+contactSchema.post('findOneAndUpdate', handleSaveError);
 
 const ContactCollection = model('contacts', contactSchema);
 
