@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as authControllers from '../controllers/auth.js';
+
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 import validateBody from '../utils/validateBody.js';
 
