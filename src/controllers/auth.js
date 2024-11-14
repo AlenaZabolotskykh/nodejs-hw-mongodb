@@ -1,5 +1,6 @@
 import createHttpError from 'http-errors';
 import * as authServices from '../services/auth.js';
+import { accessTokenLifetime } from '../constants/users.js';
 
 export const registerController = async (req, res) => {
   const data = await authServices.register(req.body);
@@ -11,10 +12,24 @@ export const registerController = async (req, res) => {
 };
 
 export const loginController = async (req, res) => {
-  const session = await authServices.login(req.body);
+  const { _id, accessToken, refreshToken, refreshTokenValidUntil } =
+    await authServices.login(req.body);
 
-  //   res.status(201).json({
-  //     status: 201,
-  //     message: 'Successfully registered user',
-  //   });
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    expires: refreshTokenValidUntil,
+  });
+
+  res.cookie('sessionId', _id, {
+    httpOnly: true,
+    expires: refreshTokenValidUntil,
+  });
+
+  res.json({
+    status: 200,
+    message: 'Successfully login user',
+    data: {
+      accessToken,
+    },
+  });
 };

@@ -15,7 +15,7 @@ authRouter.post(
 
 authRouter.post(
   '/login',
-  validateBody(authRegisterShema),
+  validateBody(authLoginShema),
   ctrlWrapper(authControllers.loginController),
 );
 
