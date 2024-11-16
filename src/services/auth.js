@@ -13,12 +13,12 @@ const createSession = () => {
   const accessToken = randomBytes(30).toString('base64');
   const refreshToken = randomBytes(30).toString('base64');
 
-  return SessionCollection.create({
+  return {
     accessToken,
     refreshToken,
     accessTokenValidUntil: Date.now() + accessTokenLifetime,
     refreshTokenValidUntil: Date.now() + refreshTokenLifetime,
-  });
+  };
 };
 
 export const register = async (payload) => {
@@ -46,15 +46,11 @@ export const login = async ({ email, password }) => {
 
   await SessionCollection.deleteOne({ userId: user._id });
 
-  const accessToken = randomBytes(30).toString('base64');
-  const refreshToken = randomBytes(30).toString('base64');
+  const newSession = createSession();
 
   return SessionCollection.create({
     userId: user._id,
-    accessToken,
-    refreshToken,
-    accessTokenValidUntil: Date.now() + accessTokenLifetime,
-    refreshTokenValidUntil: Date.now() + refreshTokenLifetime,
+    ...newSession,
   });
 };
 
@@ -71,12 +67,12 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
     throw createHttpError(401, 'Session token expired');
   }
 
-  await SessionCollection.deleteOne({ userId: session.userId });
+  await SessionCollection.deleteOne({ _id: session._id });
 
   const newSession = createSession();
 
   return SessionCollection.create({
-    userId: user._id,
+    userId: session.userId,
     ...newSession,
   });
 };
