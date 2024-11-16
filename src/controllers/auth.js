@@ -21,7 +21,7 @@ export const registerController = async (req, res) => {
 
   res.status(201).json({
     status: 201,
-    message: 'Successfully registered user',
+    message: 'Successfully registered a user!',
   });
 };
 
@@ -32,7 +32,7 @@ export const loginController = async (req, res) => {
 
   res.json({
     status: 200,
-    message: 'Successfully login user',
+    message: 'Successfully logged in an user!',
     data: {
       accessToken: session.accessToken,
     },
@@ -46,7 +46,7 @@ export const refreshSessionController = async (req, res) => {
 
   res.json({
     status: 200,
-    message: 'Successfully refresh session',
+    message: 'Successfully refreshed a session!',
     data: {
       accessToken: session.accessToken,
     },
