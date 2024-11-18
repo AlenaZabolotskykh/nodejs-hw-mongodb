@@ -54,7 +54,7 @@ export const addContact = (payload) => ContactCollection.create(payload);
 
 export const updateContact = async (
   contactId,
-  userId,
+  { userId },
   payload,
   options = {},
 ) => {
