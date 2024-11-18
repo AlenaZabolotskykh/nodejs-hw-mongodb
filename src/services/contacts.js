@@ -52,12 +52,12 @@ export const getContactById = async (contactId, userId) => {
 
 export const addContact = (payload) => ContactCollection.create(payload);
 
-export const updateContact = async ({
+export const updateContact = async (
   contactId,
   userId,
   payload,
   options = {},
-}) => {
+) => {
   const rawResult = await ContactCollection.findOneAndUpdate(
     { _id: contactId, userId },
     payload,
