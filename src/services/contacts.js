@@ -39,18 +39,34 @@ export const getContacts = async ({
 };
 
 export const getContactById = async (contactId, userId) => {
-  const contacts = await ContactCollection.findOne({ _id: contactId, userId });
+  const contacts = await ContactCollection.findOne({
+    _id: contactId,
+    userId,
+  });
+
+  // console.log('contactId:', contactId);
+  // console.log('userId:', userId);
+
   return contacts;
 };
 
 export const addContact = (payload) => ContactCollection.create(payload);
 
-export const updateContact = async ({ _id, payload, options = {} }) => {
-  const rawResult = await ContactCollection.findOneAndUpdate({ _id }, payload, {
-    ...options,
-    new: true,
-    includeResultMetadata: true,
-  });
+export const updateContact = async ({
+  contactId,
+  userId,
+  payload,
+  options = {},
+}) => {
+  const rawResult = await ContactCollection.findOneAndUpdate(
+    { _id: contactId, userId },
+    payload,
+    {
+      ...options,
+      new: true,
+      includeResultMetadata: true,
+    },
+  );
   if (!rawResult || !rawResult.value) return null;
   return {
     data: rawResult.value,
@@ -58,5 +74,11 @@ export const updateContact = async ({ _id, payload, options = {} }) => {
   };
 };
 
-export const deleteContact = async (filter) =>
-  ContactCollection.findOneAndDelete(filter);
+export const deleteContact = async (contactId, userId) => {
+  const contact = await ContactCollection.findOneAndDelete({
+    _id: contactId,
+    userId,
+  });
+
+  return { message: 'Contact deleted successfully' };
+};
