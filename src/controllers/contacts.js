@@ -57,24 +57,24 @@ export const addContactController = async (req, res) => {
   });
 };
 
-export const upsertContactController = async (req, res) => {
-  const { contactId: _id } = req.params;
-  const result = await contactServices.updateContact({
-    _id,
-    payload: req.body,
-    options: {
-      upsert: true,
-    },
-  });
+// export const upsertContactController = async (req, res) => {
+//   const { contactId: _id } = req.params;
+//   const result = await contactServices.updateContact({
+//     _id,
+//     payload: req.body,
+//     options: {
+//       upsert: true,
+//     },
+//   });
 
-  const status = result.isNew ? 201 : 200;
+//   const status = result.isNew ? 201 : 200;
 
-  res.status(status).json({
-    status,
-    message: 'Contact upserted successfully',
-    data: result.data,
-  });
-};
+//   res.status(status).json({
+//     status,
+//     message: 'Contact upserted successfully',
+//     data: result.data,
+//   });
+// };
 
 export const patchContactController = async (req, res) => {
   const { contactId } = req.params;
@@ -82,8 +82,8 @@ export const patchContactController = async (req, res) => {
 
   const result = await contactServices.updateContact(
     contactId,
-    req.body,
     userId,
+    req.body,
   );
 
   if (!result) {
@@ -92,7 +92,7 @@ export const patchContactController = async (req, res) => {
   res.json({
     status: 200,
     message: 'Contact patched successfully',
-    data: result.contact,
+    data: result.data,
   });
 };
 
