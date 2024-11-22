@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors';
 import * as authServices from '../services/auth.js';
 import { accessTokenLifetime } from '../constants/users.js';
+import { requestResetToken } from '../services/auth.js';
 
 const setupSession = (res, session) => {
   const { _id, refreshToken, refreshTokenValidUntil } = session;
@@ -66,6 +67,14 @@ export const logoutController = async (req, res) => {
 
   res.clearCookie('sessionId');
   res.clearCookie('refreshToken');
-
   res.status(204).send();
+};
+
+export const requestResetEmailController = async (req, res) => {
+  await requestResetToken(req.body.email);
+  res.json({
+    message: 'Reset password email was successfully sent!',
+    status: 200,
+    data: {},
+  });
 };

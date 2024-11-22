@@ -27,4 +27,13 @@ authRouter.post(
 
 authRouter.post('/logout', ctrlWrapper(authControllers.logoutController));
 
+import { requestResetEmailSchema } from '../validation/auth.js';
+import { requestResetEmailController } from '../controllers/auth.js';
+
+authRouter.post(
+  '/send-reset-email',
+  validateBody(requestResetEmailSchema),
+  ctrlWrapper(requestResetEmailController),
+);
+
 export default authRouter;
