@@ -6,6 +6,8 @@ import { parseSortParams } from '../utils/parseSortParams.js';
 import { sortByList } from '../db/models/contact.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+
 export const getContactsController = async (req, res, next) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
@@ -48,8 +50,18 @@ export const getContactController = async (req, res, next) => {
 
 export const addContactController = async (req, res) => {
   const { _id: userId } = req.user;
+  const photo = req.file;
+  let photoUrl;
 
-  const data = await contactServices.addContact({ ...req.body, userId });
+  if (photo) {
+    photoUrl = await saveFileToUploadDir(photo);
+  }
+
+  const data = await contactServices.addContact({
+    ...req.body,
+    userId,
+    photo: photoUrl,
+  });
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
@@ -79,11 +91,19 @@ export const addContactController = async (req, res) => {
 export const patchContactController = async (req, res) => {
   const { contactId } = req.params;
   const { _id: userId } = req.user;
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    photoUrl = await saveFileToUploadDir(photo);
+  }
 
   const result = await contactServices.updateContact(
     contactId,
     userId,
     req.body,
+    photoUrl,
   );
 
   if (!result) {
