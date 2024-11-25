@@ -105,12 +105,15 @@ export const patchContactController = async (req, res) => {
       photoUrl = await saveFileToUploadDir(photo);
     }
   }
+  const payload = {
+    ...req.body,
+    photoUrl,
+  };
 
   const result = await contactServices.updateContact(
     contactId,
     userId,
-    req.body,
-    photoUrl,
+    payload,
   );
 
   if (!result) {
