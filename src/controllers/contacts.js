@@ -1,6 +1,5 @@
 import * as contactServices from '../services/contacts.js';
 import createHttpError from 'http-errors';
-import * as path from 'node:path';
 // import { contactAddSchema } from '../validation/contacts.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
@@ -58,7 +57,11 @@ export const addContactController = async (req, res) => {
   let photoUrl;
 
   if (photo) {
-    photoUrl = await saveFileToUploadDir(photo);
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo, 'photo');
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
   }
 
   const data = await contactServices.addContact({
