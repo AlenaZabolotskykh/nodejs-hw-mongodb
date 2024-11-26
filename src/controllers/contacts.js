@@ -1,5 +1,6 @@
 import * as contactServices from '../services/contacts.js';
 import createHttpError from 'http-errors';
+import * as path from 'node:path';
 // import { contactAddSchema } from '../validation/contacts.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
@@ -91,7 +92,7 @@ export const addContactController = async (req, res) => {
 //   });
 // };
 
-export const patchContactController = async (req, res) => {
+export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const { _id: userId } = req.user;
   const photo = req.file;
@@ -107,7 +108,7 @@ export const patchContactController = async (req, res) => {
   }
   const payload = {
     ...req.body,
-    photoUrl,
+    photo: photoUrl,
   };
 
   const result = await contactServices.updateContact(
