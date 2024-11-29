@@ -7,6 +7,7 @@ import validateBody from '../utils/validateBody.js';
 import {
   authLoginShema,
   authRegisterShema,
+  loginWithGoogleOAuthSchema,
   resetPasswordSchema,
 } from '../validation/auth.js';
 
@@ -52,6 +53,12 @@ authRouter.get(
   '/get-oauth-url',
 
   ctrlWrapper(authControllers.getGoogleOAuthUrlController),
+);
+
+authRouter.post(
+  '/confirm-oauth',
+  validateBody(loginWithGoogleOAuthSchema),
+  ctrlWrapper(authControllers.loginWithGoogleController),
 );
 
 export default authRouter;
