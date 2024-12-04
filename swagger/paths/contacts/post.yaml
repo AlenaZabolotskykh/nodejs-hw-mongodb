@@ -22,7 +22,7 @@ requestBody:
           phoneNumber:
             description: "Contact's number"
             type: number
-            example: 38093111111
+            example: '38093111111'
           contactType:
             description: "Contact's typr"
             type: string

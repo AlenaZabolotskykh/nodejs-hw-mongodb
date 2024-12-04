@@ -1,7 +1,7 @@
 tags:
   - Contacts
-summary: Get contacts by id
-operationId: getContacts
+summary: Get contact by id
+operationId: getContact
 description: 'Get contact by id'
 security:
   - bearerAuth: []
@@ -32,6 +32,6 @@ responses:
               example: Successfully found contact!
             data:
               type: object
-              $ref: '../../../components/schemas/contact.yaml'
+              $ref: ../../../components/schemas/contact.yaml
   '401':
     $ref: '../../../components/responses/401.yaml'

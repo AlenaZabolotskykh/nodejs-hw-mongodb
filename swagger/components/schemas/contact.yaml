@@ -1,15 +1,9 @@
 type: object
 required:
-  - _id
   - name
   - phoneNumber
   - contactType
-  - userId
 properties:
-  _id:
-    description: "Contact's id"
-    type: string
-    example: 65e4decdd286b30065d54af9
   name:
     description: "Contact's name"
     type: string
@@ -17,7 +11,10 @@ properties:
   phoneNumber:
     description: "Contact's number"
     type: number
-    example: 3801111111
+    example: '3801111111'
+  email:
+    description: "Contact's email"
+    type: string
   contactType:
     description: "Contact's type"
     type: string

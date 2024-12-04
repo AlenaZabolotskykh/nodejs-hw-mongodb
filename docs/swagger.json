@@ -78,6 +78,14 @@
               ],
               "example": "asc"
             }
+          },
+          {
+            "in": "query",
+            "name": "isFavourite",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
           }
         ],
         "responses": {
@@ -186,7 +194,7 @@
                   "phoneNumber": {
                     "description": "Contact's number",
                     "type": "number",
-                    "example": 38093111111
+                    "example": "38093111111"
                   },
                   "contactType": {
                     "description": "Contact's typr",
@@ -248,8 +256,8 @@
         "tags": [
           "Contacts"
         ],
-        "summary": "Get contacts by id",
-        "operationId": "getContacts",
+        "summary": "Get contact by id",
+        "operationId": "getContact",
         "description": "Get contact by id",
         "security": [
           {
@@ -315,18 +323,11 @@
       "contact": {
         "type": "object",
         "required": [
-          "_id",
           "name",
           "phoneNumber",
-          "contactType",
-          "userId"
+          "contactType"
         ],
         "properties": {
-          "_id": {
-            "description": "Contact's id",
-            "type": "string",
-            "example": "65e4decdd286b30065d54af9"
-          },
           "name": {
             "description": "Contact's name",
             "type": "string",
@@ -335,7 +336,11 @@
           "phoneNumber": {
             "description": "Contact's number",
             "type": "number",
-            "example": 3801111111
+            "example": "3801111111"
+          },
+          "email": {
+            "description": "Contact's email",
+            "type": "string"
           },
           "contactType": {
             "description": "Contact's type",
